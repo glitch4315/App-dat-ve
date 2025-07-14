@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BTL</string>
+    <string name="navigation_drawer_open">Mở menu</string>
+    <string name="navigation_drawer_close">Đóng menu</string>
+    <string name="default_web_client_id">your_web_client_id_here</string>
+
+
+</resources>

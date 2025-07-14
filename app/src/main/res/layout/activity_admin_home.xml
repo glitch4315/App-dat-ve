@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_large"
+    android:background="@color/background_light">
+
+    <TextView
+        android:id="@+id/tvAdminTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trang quản trị"
+        android:textSize="30sp"
+        android:textColor="@color/primary_color"
+        android:fontFamily="sans-serif-bold"
+        android:padding="@dimen/padding_small"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/margin_large"/>
+
+    <Button
+        android:id="@+id/btnManageMovies"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Quản lý phim"
+        android:textSize="16sp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:paddingVertical="@dimen/padding_small"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintTop_toBottomOf="@id/tvAdminTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnManageUsers"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_small"/>
+
+    <Button
+        android:id="@+id/btnManageUsers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Quản lý người dùng"
+        android:textSize="16sp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:paddingVertical="@dimen/padding_small"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintTop_toBottomOf="@id/tvAdminTitle"
+        app:layout_constraintStart_toEndOf="@id/btnManageMovies"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_small"/>
+
+    <Button
+        android:id="@+id/btnManageTheaters"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Quản lý rạp"
+        android:textSize="16sp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:paddingVertical="@dimen/padding_small"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintTop_toBottomOf="@id/btnManageMovies"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnViewRevenue"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_small"/>
+
+    <Button
+        android:id="@+id/btnViewRevenue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Doanh thu"
+        android:textSize="16sp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:paddingVertical="@dimen/padding_small"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintTop_toBottomOf="@id/btnManageUsers"
+        app:layout_constraintStart_toEndOf="@id/btnManageTheaters"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_small"/>
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Đăng xuất"
+        android:background="@drawable/button_logout_background"
+        android:textColor="@color/white"
+        android:paddingVertical="@dimen/padding_small"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@id/btnManageTheaters"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginHorizontal="@dimen/margin_medium"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

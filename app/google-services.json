@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "924733132226",
+    "project_id": "rapphim-7af0f",
+    "storage_bucket": "rapphim-7af0f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924733132226:android:6e26d72c6c8e89c81b9a5b",
+        "android_client_info": {
+          "package_name": "com.example.btl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8pQagEwb73Mf8NxvXvPEge-lceSdIUyQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
