@@ -2,6 +2,7 @@ package com.example.btl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +47,23 @@ public class ThanhToanActivity extends AppCompatActivity {
             String hoTen = edtHoTen.getText().toString().trim();
             String soDienThoai = edtPhone.getText().toString().trim();
             String email = edtEmail.getText().toString().trim();
-            int selectedMethodId = radioGroupMethod.getCheckedRadioButtonId();
+            int selectedMethodId = -1;
+            for (int i = 0; i < radioGroupMethod.getChildCount(); i++) {
+                View child = radioGroupMethod.getChildAt(i);
+                if (child instanceof LinearLayout) {
+                    LinearLayout optionLayout = (LinearLayout) child;
+                    for (int j = 0; j < optionLayout.getChildCount(); j++) {
+                        View subChild = optionLayout.getChildAt(j);
+                        if (subChild instanceof RadioButton) {
+                            RadioButton rb = (RadioButton) subChild;
+                            if (rb.isChecked()) {
+                                selectedMethodId = rb.getId();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
 
             if (hoTen.isEmpty() || soDienThoai.isEmpty() || email.isEmpty()) {

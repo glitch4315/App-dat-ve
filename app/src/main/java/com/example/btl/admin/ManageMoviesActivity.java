@@ -3,7 +3,6 @@ package com.example.btl.admin;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,16 +24,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class    ManageMoviesActivity extends AppCompatActivity {
-
-    private static final int PICK_IMAGE_REQUEST = 1;
+public class ManageMoviesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewMovies;
     private formovies dao;
     private MovieAdapter adapter;
     private ArrayList<Movie> movieList = new ArrayList<>();
-    private Uri selectedPosterUri;
-    private ImageView currentImgPreview;
     private Button btnDeleteSelected;
 
     @Override
@@ -89,7 +84,6 @@ public class    ManageMoviesActivity extends AppCompatActivity {
 
     private void showAddMovieDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_movie, null);
-
         EditText edtTitle = view.findViewById(R.id.edtTitle);
         EditText edtAuthor = view.findViewById(R.id.edtAuthor);
         EditText edtTrailer = view.findViewById(R.id.edtTrailer);
@@ -99,7 +93,32 @@ public class    ManageMoviesActivity extends AppCompatActivity {
         EditText edtRatingHeart = view.findViewById(R.id.edtHeart);
         EditText edtRatingShare = view.findViewById(R.id.edtShare);
         EditText edtRating = view.findViewById(R.id.edtRating);
+        EditText edtPrice = view.findViewById(R.id.edtPrice);
 
+        Spinner spinnerPoster = view.findViewById(R.id.spinnerPoster);
+        ImageView imgPreview = view.findViewById(R.id.imgPosterPreview);
+
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.poster_names,
+                android.R.layout.simple_spinner_item
+        );
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPoster.setAdapter(spinnerAdapter);
+
+        spinnerPoster.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedName = parent.getItemAtPosition(position).toString();
+                int resId = getResources().getIdentifier(selectedName, "drawable", getPackageName());
+                if (resId != 0) {
+                    imgPreview.setImageResource(resId);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         edtReleaseDate.setFocusable(false);
         edtReleaseDate.setOnClickListener(v -> {
@@ -114,16 +133,6 @@ public class    ManageMoviesActivity extends AppCompatActivity {
             }, year, month, day).show();
         });
 
-        ImageView imgPreview = view.findViewById(R.id.imgPosterPreview);
-        Button btnChoosePoster = view.findViewById(R.id.btnChoosePoster);
-
-        btnChoosePoster.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-            currentImgPreview = imgPreview;
-        });
-
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Thêm phim mới")
                 .setView(view)
@@ -135,24 +144,26 @@ public class    ManageMoviesActivity extends AppCompatActivity {
             Button btnAdd = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             btnAdd.setOnClickListener(v -> {
                 try {
+                    int duration = Integer.parseInt(edtDuration.getText().toString().trim());
+                    int ratingHeart = Integer.parseInt(edtRatingHeart.getText().toString().trim());
+                    int ratingShare = Integer.parseInt(edtRatingShare.getText().toString().trim());
+                    int price = Integer.parseInt(edtPrice.getText().toString().trim());
+
                     String title = edtTitle.getText().toString().trim();
                     String author = edtAuthor.getText().toString().trim();
                     String trailer = edtTrailer.getText().toString().trim();
                     String genre = edtGenre.getText().toString().trim();
-                    int duration = Integer.parseInt(edtDuration.getText().toString().trim());
                     String releaseDate = edtReleaseDate.getText().toString().trim();
-                    String posterUriStr = selectedPosterUri != null ? selectedPosterUri.toString() : null;
-
-                    int ratingHeart = Integer.parseInt(edtRatingHeart.getText().toString().trim());
-                    int ratingShare = Integer.parseInt(edtRatingShare.getText().toString().trim());
                     String rating = edtRating.getText().toString().trim();
+                    String posterName = spinnerPoster.getSelectedItem().toString();
 
-                    dao.insertMovie(title, author, trailer, genre, duration, ratingHeart, ratingShare, rating, releaseDate, posterUriStr);
+                    dao.insertMovie(title, author, trailer, genre, duration, ratingHeart, ratingShare, rating, releaseDate, posterName, String.valueOf(price));
                     Toast.makeText(this, "Đã thêm phim", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     loadMovieList();
                 } catch (Exception e) {
                     Toast.makeText(this, "Lỗi nhập liệu", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             });
         });
@@ -163,11 +174,5 @@ public class    ManageMoviesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedPosterUri = data.getData();
-            if (currentImgPreview != null) {
-                currentImgPreview.setImageURI(selectedPosterUri);
-            }
-        }
     }
 }

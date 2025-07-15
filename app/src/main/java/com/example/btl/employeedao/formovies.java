@@ -19,20 +19,24 @@ public class formovies {
         db = dbHelper.getWritableDatabase();
     }
 
-    public long insertMovie(String title, String author, String trailer, String genre, int duration,
-                            int ratingHeart, int ratingShare, String rating, String releaseDate, String poster) {
+    public void insertMovie(String title, String author, String trailer, String genre, int duration,
+                            int ratingHeart, int ratingShare, String rating, String releaseDate,
+                            String poster, String price) {
         ContentValues values = new ContentValues();
-        values.put(Movie.COLUMN_TITLE, title);
-        values.put(Movie.COLUMN_AUTHOR, author);
-        values.put(Movie.COLUMN_TRAILER, trailer);
-        values.put(Movie.COLUMN_GENRE, genre);
-        values.put(Movie.COLUMN_DURATION, duration);
-        values.put(Movie.COLUMN_RATING_HEART, ratingHeart);
-        values.put(Movie.COLUMN_RATING_SHARE, ratingShare);
-        values.put(Movie.COLUMN_RATING, rating);
-        values.put(Movie.COLUMN_RELEASE_DATE, releaseDate);
-        values.put(Movie.COLUMN_POSTER, poster);
-        return db.insert(Movie.TABLE_NAME, null, values);
+        values.put("title", title);
+        values.put("author", author);
+        values.put("trailer", trailer);
+        values.put("genre", genre);
+        values.put("duration", duration);
+        values.put("rating_heart", ratingHeart);
+        values.put("rating_share", ratingShare);
+        values.put("rating", rating);
+        values.put("release_date", releaseDate);
+        values.put("poster", poster);
+        values.put("price", price);
+
+        db.insert("movies", null, values);
+        db.close();
     }
 
     public int updateMovie(int id, String title, String author, String trailer, String genre, int duration,
@@ -60,18 +64,19 @@ public class formovies {
         Cursor cursor = db.rawQuery("SELECT * FROM " + Movie.TABLE_NAME, null);
         if (cursor.moveToFirst()) {
             do {
-                   Movie movie = new Movie(
+                Movie movie = new Movie(
                         cursor.getInt(cursor.getColumnIndexOrThrow(Movie.COLUMN_ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_AUTHOR)),
-                           cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_TRAILER)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_TRAILER)),
                         cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_GENRE)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(Movie.COLUMN_DURATION)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(Movie.COLUMN_RATING_HEART)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(Movie.COLUMN_RATING_SHARE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_RATING)),
                         cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_RELEASE_DATE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_POSTER))
+                        cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_POSTER)),
+                        cursor.getString(cursor.getColumnIndexOrThrow("price"))
                 );
                 moviesList.add(movie);
             } while (cursor.moveToNext());
@@ -79,11 +84,13 @@ public class formovies {
         cursor.close();
         return moviesList;
     }
+
     public void addToCart(int movieId) {
         ContentValues values = new ContentValues();
         values.put("in_cart", 1);
         db.update(Movie.TABLE_NAME, values, "id = ?", new String[]{String.valueOf(movieId)});
     }
+
     public List<Movie> getMoviesInCart() {
         List<Movie> list = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM movies WHERE in_cart = 1", null);
@@ -101,7 +108,8 @@ public class formovies {
                         cursor.getInt(cursor.getColumnIndexOrThrow("rating_share")),
                         cursor.getString(cursor.getColumnIndexOrThrow("rating")),
                         cursor.getString(cursor.getColumnIndexOrThrow("release_date")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                        cursor.getString(cursor.getColumnIndexOrThrow("poster")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("price"))
                 );
                 list.add(movie);
             } while (cursor.moveToNext());
@@ -124,7 +132,8 @@ public class formovies {
                     cursor.getInt(cursor.getColumnIndexOrThrow(Movie.COLUMN_RATING_SHARE)),
                     cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_RELEASE_DATE)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_POSTER))
+                    cursor.getString(cursor.getColumnIndexOrThrow(Movie.COLUMN_POSTER)),
+                    cursor.getString(cursor.getColumnIndexOrThrow("price"))
             );
             cursor.close();
             return movie;

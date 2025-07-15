@@ -74,14 +74,28 @@ public class forticket {
         return list;
     }
 
-    public String getTicketById(int id) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ticket.TABLE_NAME + " WHERE " + ticket.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+    public String getTicketPriceByMovieId(int movieId) {
+        String price = "95000"; // fallback nếu không có giá
+
+        // Lấy tên phim từ movieId
+        Cursor nameCursor = db.rawQuery("SELECT title FROM movies WHERE id = ?", new String[]{String.valueOf(movieId)});
+        if (!nameCursor.moveToFirst()) {
+            nameCursor.close();
+            return price; // không có movie → return fallback
+        }
+        String movieName = nameCursor.getString(0);
+        nameCursor.close();
+
+        // Truy vấn giá vé theo tên phim
+        Cursor cursor = db.rawQuery("SELECT price FROM tickets WHERE movieName = ? LIMIT 1", new String[]{movieName});
         if (cursor.moveToFirst()) {
-            String result = cursor.getInt(0) + " | User: " + cursor.getInt(1) + " | Seat: " + cursor.getString(4);
-            cursor.close();
-            return result;
+            price = cursor.getString(0);
         }
         cursor.close();
-        return null;
+
+        return price;
     }
+
+
 }
+

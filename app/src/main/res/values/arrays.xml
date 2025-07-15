@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="poster_names">
+        <item>sample_movie</item>
+        <item>deadpool</item>
+        <item>dragon</item>
+        <item>avengers</item>
+    </string-array>
+</resources>

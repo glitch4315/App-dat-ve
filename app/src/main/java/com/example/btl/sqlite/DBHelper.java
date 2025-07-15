@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.btl.model.EventPromotion;
 import com.example.btl.model.Movie;
-import com.example.btl.model.giohangticket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     "author TEXT," +
                     "trailer TEXT," +
                     "genre TEXT," +
+                    "price TEXT," +
                     "duration INTEGER," +
                     "rating_heart INTEGER DEFAULT 0," +
                     "rating_share INTEGER DEFAULT 0," +
@@ -105,6 +106,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (ticket_id) REFERENCES tickets(id)," +
                     "FOREIGN KEY (food_id) REFERENCES food(id)" +
                     ");";
+    private static final String CREATE_TABLE_EVENT_PROMOTIONS =
+            "CREATE TABLE event_promotions (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "title TEXT NOT NULL," +
+                    "description TEXT," +
+                    "image_url TEXT" +
+                    ");";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -119,6 +127,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_ROOMS);
         db.execSQL(CREATE_TABLE_FOOD);
         db.execSQL(CREATE_TABLE_SALE);
+        db.execSQL(CREATE_TABLE_EVENT_PROMOTIONS);
     }
 
     @Override
@@ -130,6 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS rooms");
         db.execSQL("DROP TABLE IF EXISTS food");
         db.execSQL("DROP TABLE IF EXISTS sale");
+        db.execSQL("DROP TABLE IF EXISTS event_promotions");
         onCreate(db);
     }
 
@@ -152,7 +162,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndexOrThrow("rating_share")),
                         cursor.getString(cursor.getColumnIndexOrThrow("rating")),
                         cursor.getString(cursor.getColumnIndexOrThrow("release_date")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                        cursor.getString(cursor.getColumnIndexOrThrow("poster")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("price"))
                 );
                 list.add(movie);
             } while (cursor.moveToNext());
@@ -210,12 +221,38 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return exists;
     }
-
-
-
-    public void deleteTicketById(int id) {
-        getWritableDatabase().delete("tickets", "id = ?", new String[]{String.valueOf(id)});
+    public List<EventPromotion> getAllPromotions() {
+        List<EventPromotion> list = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query("event_promotions", null, null, null, null, null, "id DESC");
+        while (c.moveToNext()) {
+            list.add(new EventPromotion(
+                    c.getInt(c.getColumnIndexOrThrow("id")),
+                    c.getString(c.getColumnIndexOrThrow("title")),
+                    c.getString(c.getColumnIndexOrThrow("description"))
+            ));
+        }
+        c.close();
+        return list;
     }
 
+    public long addPromotion(EventPromotion p) {
+        ContentValues v = new ContentValues();
+        v.put("title", p.getTitle());
+        v.put("description", p.getDescription());
+        v.put("image_url", p.getImageUrl());
+        return getWritableDatabase().insert("event_promotions", null, v);
+    }
 
+    public int updatePromotion(EventPromotion p) {
+        ContentValues v = new ContentValues();
+        v.put("title", p.getTitle());
+        v.put("description", p.getDescription());
+        v.put("image_url", p.getImageUrl());
+        return getWritableDatabase().update("event_promotions", v, "id=?", new String[]{String.valueOf(p.getId())});
+    }
+
+    public int deletePromotion(int id) {
+        return getWritableDatabase().delete("event_promotions", "id=?", new String[]{String.valueOf(id)});
+    }
 }

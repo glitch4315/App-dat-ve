@@ -15,7 +15,7 @@ import com.example.btl.model.Movie;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private TextView txtTitle, txtGenre, txtDuration, txtRelease, txtAuthor;
+    private TextView txtTitle, txtGenre, txtDuration, txtRelease, txtAuthor, txtTicketPrice;
     private ImageView imgPoster;
     private Button btnDatVe;
     private Movie movie;
@@ -32,6 +32,7 @@ public class DetailActivity extends AppCompatActivity {
         txtAuthor = findViewById(R.id.txtDetailAuthor);
         imgPoster = findViewById(R.id.imgDetailPoster);
         btnDatVe = findViewById(R.id.btnDatVe);
+        txtTicketPrice = findViewById(R.id.txtTicketPrice);
 
         int movieId = getIntent().getIntExtra("movie_id", -1);
 
@@ -41,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
 
             if (movie != null) {
                 showMovieInfo(movie);
+                txtTicketPrice.setText("Giá vé: " + movie.getPrice() + "đ"); // ✅ từ movie
             } else {
                 Toast.makeText(this, "Không tìm thấy phim", Toast.LENGTH_SHORT).show();
                 finish();
@@ -50,24 +52,26 @@ public class DetailActivity extends AppCompatActivity {
             finish();
         }
 
-        btnDatVe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                forticket ticketDao = new forticket(DetailActivity.this);
+        btnDatVe.setOnClickListener(v -> {
+            forticket ticketDao = new forticket(DetailActivity.this);
+            String ticketPrice = movie.getPrice(); // ✅ từ movie
 
-                // ⚠️ Dữ liệu giả lập, bạn có thể thay bằng input thực tế (seat, room, price)
-                ticketDao.insertTicket(
-                        1, // user_id giả định
-                        0, // event_id giả định
-                        movie.getTitle(),
-                        "95000", // giá vé mẫu
-                        "A1",    // phòng mẫu
-                        "C1, C2", // ghế mẫu
-                        movie.getPoster()
-                );
+            int userId = 1; // user mẫu
+            int eventId = 0;
+            String room = "A1";
+            String seat = "C1, C2";
 
-                Toast.makeText(DetailActivity.this, "Đã thêm vé vào giỏ hàng", Toast.LENGTH_SHORT).show();
-            }
+            ticketDao.insertTicket(
+                    userId,
+                    eventId,
+                    movie.getTitle(),
+                    ticketPrice,
+                    room,
+                    seat,
+                    movie.getPoster()
+            );
+
+            Toast.makeText(DetailActivity.this, "Đã thêm vé vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -77,6 +81,7 @@ public class DetailActivity extends AppCompatActivity {
         txtDuration.setText("Thời lượng: " + movie.getDuration() + " phút");
         txtRelease.setText("Khởi chiếu: " + movie.getReleaseDate());
         txtAuthor.setText("Đạo diễn: " + movie.getAuthor());
+        txtTicketPrice.setText("Giá vé: " + movie.getPrice() + "đ");
 
         String posterName = movie.getPoster();
         if (posterName != null && !posterName.trim().isEmpty()) {

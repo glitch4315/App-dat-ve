@@ -61,12 +61,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         // Load poster từ URI
         String posterPath = movie.getPoster();
-        if (posterPath != null && !posterPath.trim().isEmpty()) {
-            Uri uri = Uri.parse(posterPath);
-            Glide.with(context).load(uri).placeholder(R.drawable.ic_launcher_background).into(holder.imgPoster);
+        String posterName = movie.getPoster();
+        if (posterName != null && !posterName.isEmpty()) {
+            int resId = context.getResources().getIdentifier(posterName, "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.imgPoster.setImageResource(resId);
+            } else {
+                holder.imgPoster.setImageResource(R.drawable.sample_movie);
+            }
         } else {
-            holder.imgPoster.setImageResource(R.drawable.ic_launcher_background);
+            holder.imgPoster.setImageResource(R.drawable.sample_movie);
         }
+
 
         // Checkbox chọn phim
         holder.checkboxSelect.setChecked(movie.isSelected());

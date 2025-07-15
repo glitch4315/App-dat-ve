@@ -23,13 +23,14 @@ public class Movie {
     private int duration;
     private int ratingHeart;
     private int ratingShare;
+    private String price;
     private String rating;
     private String releaseDate;
     private String poster;
 
     public Movie(int id, String title, String author, String trailer, String genre,
                  int duration, int ratingHeart, int ratingShare, String rating,
-                 String releaseDate, String poster) {
+                 String releaseDate, String poster, String price) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -41,6 +42,7 @@ public class Movie {
         this.rating = rating;
         this.releaseDate = releaseDate;
         this.poster = poster;
+        this.price = price;
     }
 
     public int getId() { return id; }
@@ -49,6 +51,10 @@ public class Movie {
     public String getTrailer() { return trailer; }
     public String getGenre() { return genre; }
     public int getDuration() { return duration; }
+    public String getPrice() {
+        return price;
+    }
+
     public int getRatingHeart() { return ratingHeart; }
     public int getRatingShare() { return ratingShare; }
     public String getRating() { return rating; }
@@ -65,6 +71,9 @@ public class Movie {
     public void setRating(String rating) { this.rating = rating; }
     public void setReleaseDate(String releaseDate) { this.releaseDate = releaseDate; }
     public void setPoster(String poster) { this.poster = poster; }
+    public void setPrice(String price) {
+        this.price = price;
+    }
     private boolean isSelected = false;
 
     public boolean isSelected() {

@@ -7,24 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    tools:context=".ThanhToanActivity">
 
     <!-- Toolbar -->
-
-    <!-- Họ tên -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarThanhToan"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title=""
-        app:titleTextColor="@android:color/white">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Tiêu đề ở giữa -->
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
@@ -33,79 +28,78 @@
             android:gravity="center"
             android:text="THÔNG TIN THANH TOÁN"
             android:textColor="@android:color/white"
-            android:textSize="23sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- Họ tên -->
     <EditText
         android:id="@+id/edtHoTen"
-        android:layout_width="381dp"
-        android:layout_height="61dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Họ và tên"
         android:inputType="textPersonName"
         android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarThanhToan"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarThanhToan" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Số điện thoại -->
     <EditText
         android:id="@+id/edtPhone"
-        android:layout_width="383dp"
-        android:layout_height="57dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:hint="Số điện thoại"
         android:inputType="phone"
         android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtHoTen"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtHoTen" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Email -->
     <EditText
         android:id="@+id/edtEmail"
-        android:layout_width="383dp"
-        android:layout_height="64dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtPhone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtPhone" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Chọn phương thức -->
+    <!-- Phương thức thanh toán -->
     <TextView
         android:id="@+id/txtMethod"
-        android:layout_width="385dp"
-        android:layout_height="46dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Chọn phương thức thanh toán:"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtEmail" />
+        app:layout_constraintTop_toBottomOf="@id/edtEmail"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- RadioGroup thanh toán -->
     <RadioGroup
         android:id="@+id/paymentMethodGroup"
-        android:layout_width="383dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/txtMethod"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtMethod">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Momo -->
+        <!-- MOMO -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:padding="4dp">
 
             <RadioButton
                 android:id="@+id/rdoMomo"
@@ -113,18 +107,26 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
                 android:src="@drawable/logo_momo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Momo"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
         </LinearLayout>
 
         <!-- MB -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:padding="4dp">
 
             <RadioButton
                 android:id="@+id/rdoMB"
@@ -132,18 +134,26 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
                 android:src="@drawable/logo_mb" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MB Bank"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
         </LinearLayout>
 
         <!-- ZaloPay -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:padding="4dp">
 
             <RadioButton
                 android:id="@+id/rdoZalo"
@@ -151,46 +161,49 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
                 android:src="@drawable/logo_zalopay" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ZaloPay"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
         </LinearLayout>
     </RadioGroup>
 
+
     <!-- Tổng tiền -->
-
-    <!-- Nút xác nhận -->
-
     <TextView
         android:id="@+id/txtTotalPayment"
-        android:layout_width="378dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="164dp"
-        android:gravity="end"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="Tổng tiền: 0đ"
-        android:textColor="#100B0D"
-        android:textSize="20sp"
+        android:textColor="#000000"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/paymentMethodGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/paymentMethodGroup" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Xác nhận thanh toán -->
     <Button
         android:id="@+id/btnConfirmPayment"
-        android:layout_width="376dp"
-        android:layout_height="63dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#673AB7"
-        android:padding="12dp"
         android:text="Xác nhận thanh toán"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="12dp"
         app:layout_constraintTop_toBottomOf="@id/txtTotalPayment"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

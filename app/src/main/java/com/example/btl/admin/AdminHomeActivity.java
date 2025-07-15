@@ -37,12 +37,12 @@ public class AdminHomeActivity extends AppCompatActivity {
 
         // Sự kiện click cho nút Quản lý rạp
         btnManageTheaters.setOnClickListener(v ->
-                startActivity(new Intent(AdminHomeActivity.this, ManagerCinemaActivity.class))
+                startActivity(new Intent(AdminHomeActivity.this, ManageEventActivity.class))
         );
 
         // Sự kiện click cho nút Doanh thu
         btnViewRevenue.setOnClickListener(v ->
-                startActivity(new Intent(AdminHomeActivity.this, LoginActivity.class)) // Bạn có thể thay bằng RevenueActivity sau nếu có
+                startActivity(new Intent(AdminHomeActivity.this, RevenueActivity.class))
         );
 
         // Sự kiện click cho nút Đăng xuất

@@ -54,13 +54,24 @@
             android:text="Ngày khởi chiếu"
             android:layout_marginTop="4dp" />
 
+
+        <TextView
+            android:id="@+id/txtTicketPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giá vé"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+
         <Button
             android:id="@+id/btnDatVe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Đặt vé"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:textColor="@android:color/white"
             android:backgroundTint="@color/purple_500" />
+
     </LinearLayout>
 </ScrollView>
