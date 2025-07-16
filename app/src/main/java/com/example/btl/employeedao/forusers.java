@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class forusers {
+    private DBHelper dbHelper;
     private SQLiteDatabase db;
 
     public forusers(Context context) {
-        DBHelper dbHelper = new DBHelper(context);
+        dbHelper = new DBHelper(context); // sửa lỗi dbHelper viết thường
         db = dbHelper.getWritableDatabase();
     }
 
@@ -47,14 +48,15 @@ public class forusers {
         return isValid;
     }
 
-    public int updateUser(int id, String name, String email, String phone, String dob, String password) {
+    public boolean updateUser(int id, String name, String email, String phone, String dob, String password) {
         ContentValues values = new ContentValues();
-        values.put(User.COLUMN_NAME, name);
-        values.put(User.COLUMN_EMAIL, email);
-        values.put(User.COLUMN_PHONE, phone);
-        values.put(User.COLUMN_DOB, dob);
-        values.put(User.COLUMN_PASSWORD, password);
-        return db.update(User.TABLE_NAME, values, User.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        values.put("name", name);
+        values.put("email", email);
+        values.put("phone", phone);
+        values.put("date_of_birth", dob);
+        values.put("password", password);
+        int result = db.update("users", values, "id=?", new String[]{String.valueOf(id)});
+        return result > 0;
     }
 
     public boolean isEmailExists(String email) {
@@ -64,7 +66,6 @@ public class forusers {
         cursor.close();
         return exists;
     }
-
 
     public int deleteUser(int id) {
         return db.delete(User.TABLE_NAME, User.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
@@ -91,19 +92,38 @@ public class forusers {
     }
 
     public User getUserById(int id) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + User.TABLE_NAME + " WHERE " + User.COLUMN_ID + "=?",
-                new String[]{String.valueOf(id)});
+        Cursor c = db.rawQuery("SELECT * FROM users WHERE id = ?", new String[]{String.valueOf(id)});
+        if (c.moveToFirst()) {
+            User user = new User(
+                    c.getInt(c.getColumnIndexOrThrow("id")),
+                    c.getString(c.getColumnIndexOrThrow("name")),
+                    c.getString(c.getColumnIndexOrThrow("email")),
+                    c.getString(c.getColumnIndexOrThrow("phone")),
+                    c.getString(c.getColumnIndexOrThrow("date_of_birth")),
+                    c.getString(c.getColumnIndexOrThrow("password"))
+            );
+            c.close();
+            return user;
+        }
+        c.close();
+        return null;
+    }
+    public User getUserByEmail(String email) {
+        Cursor cursor = db.query(User.TABLE_NAME, null, "email=?", new String[]{email}, null, null, null);
         if (cursor.moveToFirst()) {
-            int userId = cursor.getInt(cursor.getColumnIndexOrThrow(User.COLUMN_ID));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_NAME));
-            String email = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_EMAIL));
-            String phone = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_PHONE));
-            String dob = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_DOB));
-            String password = cursor.getString(cursor.getColumnIndexOrThrow(User.COLUMN_PASSWORD));
+            User user = new User(
+                    cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("email")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("phone")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("password"))
+            );
             cursor.close();
-            return new User(userId, name, email, phone, dob, password);
+            return user;
         }
         cursor.close();
         return null;
     }
+
 }

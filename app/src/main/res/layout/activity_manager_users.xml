@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
+        android:background="@color/purple_500"
         app:title="Quản lý người dùng"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_back"
@@ -23,19 +23,6 @@
         android:orientation="vertical"
         android:padding="@dimen/padding_large">
 
-        <Button
-            android:id="@+id/btnAddUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thêm người dùng"
-            android:background="@drawable/button_background"
-            android:textColor="@color/white"
-            android:paddingHorizontal="@dimen/padding_medium"
-            android:paddingVertical="@dimen/padding_small"
-            android:elevation="4dp"
-            android:stateListAnimator="@null"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_medium"/>
 
         <ListView
             android:id="@+id/listViewUsers"

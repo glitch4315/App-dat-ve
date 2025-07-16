@@ -1,15 +1,14 @@
 package com.example.btl;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.btl.employeedao.forusers;
+import com.example.btl.model.User;
 
 public class UserDetailActivity extends AppCompatActivity {
 
@@ -18,9 +17,9 @@ public class UserDetailActivity extends AppCompatActivity {
     Button btnSave;
     ProgressBar progressBar;
 
-    FirebaseFirestore firestore;
-    FirebaseAuth auth;
-    String uid;
+    forusers userDao;
+    int userId;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +32,16 @@ public class UserDetailActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         progressBar = findViewById(R.id.progressBar);
 
-        firestore = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        uid = auth.getCurrentUser().getUid();
+        userDao = new forusers(this);
+
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        userId = prefs.getInt("user_id", -1);
+
+        if (userId == -1) {
+            Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         loadUserInfo();
 
@@ -44,29 +50,24 @@ public class UserDetailActivity extends AppCompatActivity {
 
     private void loadUserInfo() {
         progressBar.setVisibility(View.VISIBLE);
-        firestore.collection("users").document(uid)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (documentSnapshot.exists()) {
-                        edtName.setText(documentSnapshot.getString("name"));
-                        edtPhone.setText(documentSnapshot.getString("phone"));
-                        txtEmail.setText(documentSnapshot.getString("email"));
-                    } else {
-                        Toast.makeText(this, "Không tìm thấy thông tin", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+        currentUser = userDao.getUserById(userId);
+        progressBar.setVisibility(View.GONE);
+
+        if (currentUser != null) {
+            edtName.setText(currentUser.getName());
+            edtPhone.setText(currentUser.getPhone());
+            txtEmail.setText(currentUser.getEmail());
+        } else {
+            Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void updateUserInfo() {
-        String name = edtName.getText().toString().trim();
-        String phone = edtPhone.getText().toString().trim();
+        String newName = edtName.getText().toString().trim();
+        String newPhone = edtPhone.getText().toString().trim();
 
-        if (name.isEmpty()) {
+        if (newName.isEmpty()) {
             edtName.setError("Vui lòng nhập họ tên");
             edtName.requestFocus();
             return;
@@ -74,20 +75,22 @@ public class UserDetailActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put("name", name);
-        updatedData.put("phone", phone);
+        boolean updated = userDao.updateUser(
+                userId,
+                newName,
+                currentUser.getEmail(),
+                newPhone,
+                currentUser.getDob(),
+                currentUser.getPassword()
+        );
 
-        firestore.collection("users").document(uid)
-                .update(updatedData)
-                .addOnSuccessListener(unused -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Đã cập nhật thông tin", Toast.LENGTH_SHORT).show();
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Lỗi cập nhật: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+        progressBar.setVisibility(View.GONE);
+
+        if (updated) {
+            Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+        }
     }
 }

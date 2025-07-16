@@ -14,17 +14,19 @@
         android:layout_height="match_parent">
 
         <!-- Toolbar -->
+
+        <!-- Logo giữa -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title=""
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/purple_500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="" />
 
-        <!-- Logo giữa -->
         <ImageView
             android:id="@+id/logo"
             android:layout_width="103dp"

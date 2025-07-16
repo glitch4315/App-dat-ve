@@ -29,12 +29,9 @@ public class ManageUsersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manager_users);
 
         listViewUsers = findViewById(R.id.listViewUsers);
-        btnAddUser = findViewById(R.id.btnAddUser);
         userDao = new forusers(this);
 
         loadUserList();
-
-        btnAddUser.setOnClickListener(v -> showAddUserDialog());
     }
 
     private void loadUserList() {
